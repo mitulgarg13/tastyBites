@@ -1,0 +1,12 @@
+// custom.scss
+
+// Import Bootstrap's functions and variables
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// Override theme variables
+$body-bg: #000; // Black background
+$body-color: #fff; // White text
+
+// Import the rest of Bootstrap
+@import "bootstrap/scss/bootstrap";
