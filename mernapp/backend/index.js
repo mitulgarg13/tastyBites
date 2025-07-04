@@ -13,7 +13,7 @@ const port = 5000;
 
 // ✅ Use cors middleware properly
 app.use(cors({
-  origin: 'http://localhost:5173', // 👈 your frontend port
+   origin: ['http://localhost:5173', 'http://localhost:5174'],// 👈 your frontend port
   credentials: true // optional, only needed if using cookies
 }));
 

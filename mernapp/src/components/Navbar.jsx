@@ -1,4 +1,5 @@
 
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import Badge from "@mui/material/Badge";
@@ -12,11 +13,12 @@ export default function Navbar(props) {
     const [cartView, setCartView] = useState(false)
     localStorage.setItem('temp', "first")
     let navigate = useNavigate();
-    const handleLogout = () => {
-        localStorage.removeItem('token')
+  const handleLogout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userEmail');
+  navigate("/login");
+};
 
-        navigate("/login")
-    }
 
     const loadCart = () => {
         setCartView(true)

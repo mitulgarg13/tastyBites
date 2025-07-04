@@ -7,49 +7,73 @@ export default function Signup() {
   let [address, setAddress] = useState("");
   let navigate = useNavigate();
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+ const handleClick = async (e) => {
+  e.preventDefault();
+  try {
     let navLocation = () => {
       return new Promise((res, rej) => {
         navigator.geolocation.getCurrentPosition(res, rej);
       });
     };
+
     let latlong = await navLocation().then(res => {
       let latitude = res.coords.latitude;
       let longitude = res.coords.longitude;
       return [latitude, longitude];
     });
+
     let [lat, long] = latlong;
+    console.log('Lat:', lat, 'Long:', long);
+
     const response = await fetch("http://localhost:5000/api/auth/getlocation", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ latlong: { lat, long } })
     });
-    const { location } = await response.json();
-    setAddress(location);
-    setCredentials({ ...credentials, geolocation: location });
-  };
+
+    const data = await response.json();
+    console.log('Backend response:', data);
+
+    if (data && data.location) {
+      setAddress(data.location);
+      setCredentials({ ...credentials, geolocation: data.location });
+    } else {
+      alert('Could not fetch location from server.');
+    }
+  } catch (err) {
+    console.error('Error getting location:', err);
+    alert('Please allow location access and try again.');
+  }
+};
+
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/auth/createuser", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: credentials.name,
-        email: credentials.email,
-        password: credentials.password,
-        location: credentials.geolocation
-      })
-    });
-    const json = await response.json();
-    if (json.success) {
-      localStorage.setItem('token', json.authToken);
-      navigate("/login");
-    } else {
-      alert("Enter Valid Credentials");
-    }
-  };
+  e.preventDefault();
+
+  const response = await fetch("http://localhost:5000/api/auth/createuser", {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: credentials.name,
+      email: credentials.email,
+      password: credentials.password,
+      location: credentials.geolocation
+    })
+  });
+
+  const json = await response.json();
+
+  if (json.success) {
+    // ✅ Save both!
+    localStorage.setItem('token', json.authToken);
+    localStorage.setItem('userEmail', credentials.email);  // ✅ This is needed!
+
+    navigate("/"); // ✅ Already logged in → go home
+  } else {
+    alert("Enter Valid Credentials");
+  }
+};
+
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });

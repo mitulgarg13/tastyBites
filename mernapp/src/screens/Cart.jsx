@@ -1,45 +1,76 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Delete from "@mui/icons-material/Delete";
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { useCart, useDispatchCart } from '../components/ContextReducer'
+import { useCart, useDispatchCart } from '../components/ContextReducer';
 
 export default function Cart() {
   let data = useCart();
   let dispatch = useDispatchCart();
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   if (data.length === 0) {
     return (
       <div>
+        <ToastContainer position="top-right" autoClose={3000} />
         <div className='m-5 w-100 text-center fs-3 text-white'>The Cart is Empty!</div>
       </div>
-    )
+    );
   }
 
   const handleCheckOut = async () => {
-    let userEmail = localStorage.getItem("userEmail");
-
-    let response = await fetch("http://localhost:5000/api/auth/orderData", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        order_data: data,
-        email: userEmail,
-        order_date: new Date().toDateString()
-      })
-    });
-
-    console.log("JSON RESPONSE:::::", response.status)
-    if (response.status === 200) {
-      dispatch({ type: "DROP" })
+    if (data.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
     }
-  }
 
-  let totalPrice = data.reduce((total, food) => total + food.price, 0)
+    let userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+      toast.error("Please login to place an order.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      let response = await fetch("http://localhost:5000/api/auth/orderData", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order_data: data,
+          email: userEmail,
+          order_date: new Date().toDateString()
+        })
+      });
+
+      console.log("JSON RESPONSE:::::", response.status);
+
+      if (response.status === 200) {
+        dispatch({ type: "DROP" });
+        toast.success("✅ Order placed successfully!");
+      
+      } else {
+        toast.error("❌ Order failed. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("⚠️ Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  let totalPrice = data.reduce((total, food) => total + food.price, 0);
 
   return (
-    <div className="text-white"> {/* This sets white text for all child elements */}
+    <div className="text-white">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className='container m-auto mt-5 table-responsive table-responsive-sm table-responsive-md'>
         <table className='table table-hover text-white'>
           <thead className='text-success fs-4'>
@@ -61,23 +92,31 @@ export default function Cart() {
                 <td>{food.size}</td>
                 <td>{food.price}</td>
                 <td>
-                  <button type="button" className="btn p-0 text-white">
-                    {/* <Delete onClick={() => dispatch({ type: "REMOVE", index })} /> */}
-                    <button onClick={() => dispatch({ type: "REMOVE", index })}>Delete</button>
-
-                  </button>
+                  {/* ✅ Fixed: Only using MUI Delete icon, no nested buttons */}
+                  <Delete
+                    style={{ cursor: 'pointer', color: 'white' }}
+                    onClick={() => dispatch({ type: "REMOVE", index })}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div><h1 className='fs-2'>Total Price: {totalPrice}/-</h1></div>
+
         <div>
-          <button className='btn bg-success mt-5 text-white' onClick={handleCheckOut}>
-            Check Out
+          <h1 className='fs-2'>Total Price: {totalPrice}/-</h1>
+        </div>
+
+        <div>
+          <button
+            className='btn bg-success mt-5 text-white'
+            onClick={handleCheckOut}
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Check Out"}
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
