@@ -7,15 +7,17 @@ require('./db')(function (err, data, CatData) {
 });
 
 const express = require('express');
-const cors = require('cors'); // ✅ Import cors
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
 
-
-// ✅ Use cors middleware properly
 app.use(cors({
-   origin: ['http://localhost:5173', 'http://localhost:5174'],// 👈 your frontend port
-  credentials: true // optional, only needed if using cookies
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://tasty-bites-pied.vercel.app' // ✅ Your deployed frontend
+  ],
+  credentials: true
 }));
 
 app.use(express.json());
