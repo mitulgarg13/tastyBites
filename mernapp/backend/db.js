@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 
-dotenv.config(); // Load .env
 
-const mongoURI = process.env.MONGODB_URI;
-console.log("MongoDB URI:", mongoURI); // Log the MongoDB URI for debugging
+ // Load .env
+
+const mongoURI = 'mongodb+srv://goFood13:mitul1333@cluster0.rurjoym.mongodb.net/goFoodmern?retryWrites=true&w=majority&appName=Cluster0';
 
 const connectToMongo = async (callback) => {
   try {
