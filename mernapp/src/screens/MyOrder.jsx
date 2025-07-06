@@ -5,9 +5,12 @@ import Navbar from '../components/Navbar';
 export default function MyOrder() {
   const [orderData, setOrderData] = useState([]);
 
+  // ✅ Use env variable for your backend
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
   const fetchMyOrder = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/myOrderData", {
+      const res = await fetch(`${BASE_URL}/api/auth/myOrderData`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -50,7 +53,12 @@ export default function MyOrder() {
                 {items.map((item, itemIndex) => (
                   <div className='col-12 col-md-6 col-lg-3' key={itemIndex}>
                     <div className="card mt-3" style={{ width: "16rem", maxHeight: "360px" }}>
-                      <img src={item.img} className="card-img-top" alt="..." style={{ height: "120px", objectFit: "fill" }} />
+                      <img
+                        src={item.img}
+                        className="card-img-top"
+                        alt="..."
+                        style={{ height: "120px", objectFit: "fill" }}
+                      />
                       <div className="card-body">
                         <h5 className="card-title">{item.name}</h5>
                         <div className='container w-100 p-0' style={{ height: "38px" }}>

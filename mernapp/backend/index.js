@@ -9,7 +9,8 @@ require('./db')(function (err, data, CatData) {
 const express = require('express');
 const cors = require('cors'); // ✅ Import cors
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
+
 
 // ✅ Use cors middleware properly
 app.use(cors({

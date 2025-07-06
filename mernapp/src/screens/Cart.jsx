@@ -7,17 +7,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useCart, useDispatchCart } from '../components/ContextReducer';
 
 export default function Cart() {
-  let data = useCart();
-  let dispatch = useDispatchCart();
+  const data = useCart();
+  const dispatch = useDispatchCart();
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
+
+  // ✅ Use env variable for your live backend URL
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
   if (data.length === 0) {
     return (
       <div>
         <ToastContainer position="top-right" autoClose={3000} />
-        <div className='m-5 w-100 text-center fs-3 text-white'>The Cart is Empty!</div>
+        <div className='m-5 w-100 text-center fs-3 text-white'>
+          The Cart is Empty!
+        </div>
       </div>
     );
   }
@@ -37,7 +41,7 @@ export default function Cart() {
     setLoading(true);
 
     try {
-      let response = await fetch("http://localhost:5000/api/auth/orderData", {
+      let response = await fetch(`${BASE_URL}/api/auth/orderData`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -54,7 +58,6 @@ export default function Cart() {
       if (response.status === 200) {
         dispatch({ type: "DROP" });
         toast.success("✅ Order placed successfully!");
-      
       } else {
         toast.error("❌ Order failed. Please try again.");
       }
@@ -66,7 +69,7 @@ export default function Cart() {
     }
   };
 
-  let totalPrice = data.reduce((total, food) => total + food.price, 0);
+  const totalPrice = data.reduce((total, food) => total + food.price, 0);
 
   return (
     <div className="text-white">
@@ -92,7 +95,6 @@ export default function Cart() {
                 <td>{food.size}</td>
                 <td>{food.price}</td>
                 <td>
-                  {/* ✅ Fixed: Only using MUI Delete icon, no nested buttons */}
                   <Delete
                     style={{ cursor: 'pointer', color: 'white' }}
                     onClick={() => dispatch({ type: "REMOVE", index })}

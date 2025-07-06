@@ -8,6 +8,9 @@ export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
+  // ✅ Use env variable for backend URL
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
   // Redirect if already logged in
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -18,15 +21,13 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Input validation
     if (!credentials.email || !credentials.password) {
       toast.error("Please fill in all fields");
       return;
     }
 
     try {
-      const apiUrl =  "http://localhost:5000";
-      const response = await fetch(`${apiUrl}/api/auth/login`, {
+      const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
