@@ -60,18 +60,31 @@ export default function Card(props) {
 
   return (
     <div>
-      <div className="card mt-3" style={{ width: '16rem', maxHeight: '360px' }}>
+      <div
+        className="card mt-3"
+        style={{
+          width: '16rem',
+          maxHeight: '400px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+        }}
+      >
         <img
           src={props.ImgSrc}
           className="card-img-top"
           alt={props.foodName}
-          style={{ height: '120px', objectFit: 'fill' }}
+          style={{
+            height: '160px',
+            objectFit: 'cover',
+            borderTopLeftRadius: '12px',
+            borderTopRightRadius: '12px',
+          }}
         />
         <div className="card-body">
-          <h5 className="card-title">{props.foodName}</h5>
+          <h5 className="card-title fw-bold">{props.foodName}</h5>
           <div className="container w-100 p-0" style={{ height: '38px' }}>
             <select
-              className="m-2 h-100 w-20 bg-success text-black rounded"
+              className="m-2 h-100 w-20 bg-danger text-white rounded"
               onChange={handleQty}
             >
               {Array.from(Array(6), (e, i) => (
@@ -81,7 +94,7 @@ export default function Card(props) {
               ))}
             </select>
             <select
-              className="m-2 h-100 w-20 bg-success text-black rounded"
+              className="m-2 h-100 w-20 bg-danger text-white rounded"
               ref={priceRef}
               onChange={handleOptions}
             >
@@ -91,12 +104,19 @@ export default function Card(props) {
                 </option>
               ))}
             </select>
-            <div className="d-inline ms-2 h-100 w-20 fs-5">
+            <div className="d-inline ms-2 h-100 w-20 fs-5 fw-bold text-danger">
               ₹{finalPrice}/-
             </div>
           </div>
           <hr />
-          <button className="btn btn-success justify-center ms-2" onClick={handleAddToCart}>
+          <button
+            className="btn"
+            style={{
+              backgroundColor: '#800000', // rich maroon
+              color: 'white',
+            }}
+            onClick={handleAddToCart}
+          >
             Add to Cart
           </button>
         </div>

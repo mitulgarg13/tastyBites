@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-const mongoURI = 'mongodb+srv://goFood13:mitul1333@cluster0.rurjoym.mongodb.net/goFoodmern?retryWrites=true&w=majority&appName=Cluster0';
+dotenv.config(); // Load .env
+
+const mongoURI = process.env.MONGODB_URI;
+console.log("MongoDB URI:", mongoURI); // Log the MongoDB URI for debugging
 
 const connectToMongo = async (callback) => {
   try {
@@ -11,7 +15,6 @@ const connectToMongo = async (callback) => {
 
     console.log("✅ Connected to MongoDB");
 
-
     const foodCollection = mongoose.connection.db.collection("food_items");
     const categoryCollection = mongoose.connection.db.collection("Categories");
 
@@ -19,7 +22,7 @@ const connectToMongo = async (callback) => {
     const categories = await categoryCollection.find({}).toArray();
 
     callback(null, foodItems, categories);
-    
+
   } catch (err) {
     console.error("❌ MongoDB connection error:", err);
     callback(err);
