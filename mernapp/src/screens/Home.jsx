@@ -8,7 +8,7 @@ export default function Home() {
   const [foodItems, setFoodItems] = useState([]);
   const [search, setSearch] = useState('');
 
-  // ✅ Use env variable for backend URL
+  // ✅ Use env variable for backend URL or fallback
   const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
   const loadFoodItems = async () => {
@@ -29,6 +29,12 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // ✅ Wake up backend on initial load
+    fetch(`${BASE_URL}/ping`)
+      .then(() => console.log('✅ Backend awake'))
+      .catch(() => console.log('❌ Ping failed'));
+
+    // ✅ Then load food data
     loadFoodItems();
   }, []);
 
@@ -134,3 +140,4 @@ export default function Home() {
     </div>
   );
 }
+

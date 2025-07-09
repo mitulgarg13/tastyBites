@@ -22,12 +22,17 @@ app.use(cors({
 
 app.use(express.json());
 
-// Simple test route
+// ✅ Simple test route
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// Auth routes
+// ✅ NEW: Add a /ping route to keep your Render server warm
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
+// ✅ Your Auth routes
 app.use('/api/auth', require('./Routes/Auth'));
 
 app.listen(port, () => {
