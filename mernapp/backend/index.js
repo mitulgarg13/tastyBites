@@ -15,10 +15,12 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:5174',
-    'https://tasty-bites-pied.vercel.app' // ✅ Your deployed frontend
+    'https://tasty-bites-pied.vercel.app'
   ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
+
 
 app.use(express.json());
 
