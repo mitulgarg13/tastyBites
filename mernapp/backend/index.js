@@ -1,15 +1,11 @@
-require('./db')(function (err, data, CatData) {
-  if (err) console.log(err);
-  else {
-    global.foodData = data;
-    global.foodCategory = CatData;
-  }
-});
-
+const connectToMongo = require('./db'); // ✅ new db.js exports connectToMongo()
 const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
+
+// ✅ Connect to MongoDB once
+connectToMongo();
 
 app.use(cors({
   origin: [
@@ -21,20 +17,17 @@ app.use(cors({
   credentials: true
 }));
 
-
 app.use(express.json());
 
-// ✅ Simple test route
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// ✅ NEW: Add a /ping route to keep your Render server warm
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-// ✅ Your Auth routes
+// ✅ Use your updated Auth routes (which now query fresh data)
 app.use('/api/auth', require('./Routes/Auth'));
 
 app.listen(port, () => {
