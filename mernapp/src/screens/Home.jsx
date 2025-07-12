@@ -66,28 +66,41 @@ export default function Home() {
 
           <div className="carousel-item active">
             <img
-              src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500&auto=format&fit=crop&q=60"
-              className="d-block w-100"
-              style={{ filter: "brightness(30%)" }}
-              alt="burger"
-            />
+    src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    className="d-block w-100"
+    alt="Salad"
+    style={{
+      height: "500px",      // consistent height
+      objectFit: "cover",   // crop instead of stretch
+      filter: "brightness(75%)"
+    }}
+  />
           </div>
           <div className="carousel-item">
             <img
-              src="https://images.unsplash.com/photo-1623334044303-241021148842?w=500&auto=format&fit=crop&q=60"
-              className="d-block w-100"
-              style={{ filter: "brightness(30%)" }}
-              alt="pastry"
-            />
+    src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=1380&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    className="d-block w-100"
+    alt="Salad"
+    style={{
+      height: "500px",      // consistent height
+      objectFit: "cover",   // crop instead of stretch
+      filter: "brightness(75%)"
+    }}
+  />
           </div>
-          <div className="carousel-item">
-            <img
-              src="https://images.unsplash.com/photo-1522244451342-a41bf8a13d73?w=500&auto=format&fit=crop&q=60"
-              className="d-block w-100"
-              style={{ filter: "brightness(30%)" }}
-              alt="barbeque"
-            />
-          </div>
+         <div className="carousel-item">
+  <img
+    src="https://plus.unsplash.com/premium_photo-1673590981774-d9f534e0c617?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    className="d-block w-100"
+    alt="Salad"
+    style={{
+      height: "500px",      // consistent height
+      objectFit: "cover",   // crop instead of stretch
+      filter: "brightness(75%)"
+    }}
+  />
+</div>
+
         </div>
 
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
